@@ -34,7 +34,7 @@ class Config:
 
         # model
         self.use_cnn = True
-        self.cnn_block = 5
+        self.cnn_block =  7  if self.data_set == "GENIA"  else 5
         self.kernel_size = 3  
         self.layer2_pooling =  3 
 
