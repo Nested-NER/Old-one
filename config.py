@@ -23,7 +23,7 @@ class Config:
         self.use_last_four = False
         self.input_size_bert = 768 if self.bert_config == 'base' else 1024
         self.fusion_layer = 13 if self.bert_config == 'base' else 25
-        self.bert_path = ''
+        self.bert_path =  f"./data/bert/"
         # word vector
         self.vec_model = "wiki-pubmed" if self.data_set == "GENIA"  else "glove" 
         self.word_embedding_size = 100 if self.vec_model == "glove" else 200
