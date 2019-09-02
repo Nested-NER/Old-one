@@ -82,9 +82,6 @@ def train(all_batch=[], read_from_file=True, section=[]):
             runtimeModel.setTrainData(each_batch)
             result, _, aim = runtimeModel.runClassification()
             loss = ner_model.calc_loss(result, aim)
-            if config.MultiTaskLearning and runtimeModel.getNestedData():
-                result, _, aim = runtimeModel.runNestedDepth()
-                loss += config.weight_layer * ner_model.calc_loss(result,aim)
             loss.backward()
             optimizer.step()
             losses.append(loss.data.cpu().numpy())

@@ -35,10 +35,6 @@ class Evaluate:
 
             for i in range(len(runtimeModel.word_batch)):
                 pred_entities = self.predict(runtimeModel.toi_box_batch[i], cls_s_label[i], runtimeModel.entity_batch[i], runtimeModel.word_batch_var[i])
-                #pred_entities_nested_label = self.predict(toi_box_batch[i], cls_s_nested_depth[i], entity_batch[i], word_batch_var[i])
-                #self.config.if_filter = False
-                #if self.config.if_filter:
-                    #pred_entities, pred_entities_nested_label = self.filter(pred_entities, pred_entities_nested_label)
                 pred_entities_nested_label = []
                 if self.config.if_detail:
                     self.evaluate_detail(runtimeModel.entity_batch[i], pred_entities, pred_entities_nested_label)

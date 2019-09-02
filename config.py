@@ -48,12 +48,6 @@ class Config:
         self.h = 4
         self.if_bidirectional = True
 
-        #multitask
-        self.MultiTaskLearning = False  # True
-        self.nested_depth = 3
-        self.nested_depth_fc_size = 1024  if self.use_bert == True else 256 #  256
-        self.weight_layer = 0.2
-
         # train
         self.if_gpu = True
         self.if_shuffle = True
@@ -63,7 +57,7 @@ class Config:
         self.batch_size = 8 # 12
         self.opt ="Adam" #
         self.lr = 3e-4  if self.use_bert == False or self.vec_model == "glove" else  3e-4 # 0.005 1e-4
-        self.score_th = 0.91 if self.vec_model == "glove" else 0.65
+        self.score_th = 0.75
 
         # test
         self.if_output = False
@@ -72,7 +66,7 @@ class Config:
         self.if_filter_single_layer = False
         self.layer_minlen = [1, 2, 3]
         self.layer_maxlen = [self.Lb, self.Lb, self.Lb]
-        self.test_model_path = "./model/" + self.data_set + '/' + 'epoch80_f1_0.771.pth'
+        self.test_model_path = "./model/" + self.data_set + '/' + 'f1_0.771.pth'
         self.softmax_threshold = 0  #0.5
 
     def __repr__(self):
