@@ -5,15 +5,17 @@ vec_file = {"wiki-pubmed": "./model/word2vec/wikipedia-pubmed-and-PMC-w2v.bin",
             "glove": "./model/word2vec/glove_word2vec_100d.txt"
             }
 
+# Use Config.py to set parameters.
 
 class Config:
     def __init__(self):
-        # sample
+        # data
         self.data_set = "GENIA"  # ACE05 ACE04 GENIA 
         self.data_path = f"./dataset/{self.data_set}/"
+
+        # L_{b} and IOU_{b}
         self.Lb = 10 
         self.train_neg_iou_th = 0.86  if self.data_set == "GENIA"  else 0.81 
-
         
         # bert
         self.use_bert = False
