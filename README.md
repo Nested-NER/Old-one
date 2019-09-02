@@ -20,7 +20,9 @@ Before running the code, please put word embeddings at the directory "/model/wor
 ### Data format
 
 R7 - 57 reporter cells , on the other hand , signaled induced activity of the lytic origin of EBV replication ( ori Lyt ) .
+
 NN NN NN NN NNS , IN DT JJ NN , VBD VBN NN IN DT JJ NN IN NN NN ( NN NN ) .
+
 0,5 G#cell_line|16,21 G#DNA|22,24 G#DNA
 
 The first line is a sentence. The second line is POS tags. The third line is the location (start,end] and type of entity separated by "|". For example, "0,5 G#cell_line" denotes "R7 - 57 reporter cells"  is a "cell_line".
