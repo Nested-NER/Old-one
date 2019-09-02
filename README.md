@@ -17,14 +17,14 @@ Before running the codes, please move word embeddings to "/model/word2vec/".
 
 ### Configuration
 All configuration are listed in config.py. Please verify parameters before running the codes.
-### Usage
 
+### Usage
 ####Training
-python process_data.py
-python train.py 
+>- python process_data.py
+>- python train.py 
 
 ####Testing
-python test.py
+>- python test.py
 
 ### Test Best Model:
 The best model is located on "./model" path. You can change the "test_model_path" to choose model and run
