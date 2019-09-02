@@ -4,6 +4,10 @@
 @file: model.py
 @time: 2019/05/19
 """
+# ToI-SCNN-DTE model 
+#  class TOI_Pooling defines HIT pooling operation
+#  class TOI_CNN_RES defines stacked CNN
+#  class TOI_BERT defines the contextual network of DTE using BERT 
 
 
 import pickle
