@@ -9,12 +9,12 @@ vec_file = {"wiki-pubmed": "./model/word2vec/wikipedia-pubmed-and-PMC-w2v.bin",
 class Config:
     def __init__(self):
         # sample
-        self.data_set = "GENIA"  # ACE05 ACE04 GENIA conll2003
+        self.data_set = "GENIA"  # ACE05 ACE04 GENIA 
         self.data_path = f"./dataset/{self.data_set}/"
         self.Lb = 10 
         self.train_neg_iou_th = 0.86  if self.data_set == "GENIA"  else 0.81 
 
-        # embedding
+        
         # bert
         self.use_bert = False
         self.bert_config = 'large' 
@@ -24,7 +24,8 @@ class Config:
         self.input_size_bert = 768 if self.bert_config == 'base' else 1024
         self.fusion_layer = 13 if self.bert_config == 'base' else 25
         self.bert_path = "./data/bert/"
-        # word vector
+
+        # word embeddings
         self.vec_model = "wiki-pubmed" if self.data_set == "GENIA"  else "glove" 
         self.word_embedding_size = 100 if self.vec_model == "glove" else 200
         self.word2vec_path = vec_file[self.vec_model]
