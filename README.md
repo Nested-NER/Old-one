@@ -1,4 +1,6 @@
-# Toi-SCNN-DTE:Text-of-Interest detection with Stacked Convolutional Neural Network and Dual Transformer Encoders
+# A Neural ToI Detection Model for Nested NER
+
+We provide the implementation of ToI-SCNN-DTE Model.
 
 ### Environment
 #### Python packages
@@ -13,7 +15,16 @@
 >- ACE04/05 : [glove 100d](https://drive.google.com/open?id=1qDmFF0bUKHt5GpANj7jCUmDXgq50QJKw)
 >- GENIA : [wikipedia-pubmed-and-PMC-w2v 200d](http://evexdb.org/pmresources/vec-space-models/wikipedia-pubmed-and-PMC-w2v.bin)
 
-Before running the codes, please move word embeddings to "/model/word2vec/".
+Before running the code, please put word embeddings at the directory "/model/word2vec/".
+
+### Data format
+
+R7 - 57 reporter cells , on the other hand , signaled induced activity of the lytic origin of EBV replication ( ori Lyt ) .
+NN NN NN NN NNS , IN DT JJ NN , VBD VBN NN IN DT JJ NN IN NN NN ( NN NN ) .
+0,5 G#cell_line|16,21 G#DNA|22,24 G#DNA
+
+The first line is a sentence. The second line is POS tags. The third line is the location (start,end] and type of entity separated by "|". For example, "0,5 G#cell_line" denotes "R7 - 57 reporter cells"  is a "cell_line".
+
 
 ### Configuration
 All configuration are listed in config.py. Please verify parameters before running the codes.
@@ -22,6 +33,12 @@ All configuration are listed in config.py. Please verify parameters before runni
 #### Training
 >- python process_data.py
 >- python train.py 
+
+If you run DTE for contextual network, please set  self.use_bert = False, self.if_DTE = True in config.py.
+
+If you run BERT for contextual network, please set  self.use_bert = True, self.if_DTE = False in config.py. 
+
+If you run DTE+BERT for contextual network, please set  self.use_bert = True, self.if_DTE = True in config.py.
 
 #### Testing
 >- python test.py

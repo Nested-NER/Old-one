@@ -9,23 +9,23 @@ vec_file = {"wiki-pubmed": "./model/word2vec/wikipedia-pubmed-and-PMC-w2v.bin",
 class Config:
     def __init__(self):
         # sample
-        self.data_set = "GENIA"  # ACE05 ACE04 GENIA conll2003
+        self.data_set = "ACE05"  # ACE05 ACE04 GENIA conll2003
         self.data_path = f"./dataset/{self.data_set}/"
-        self.Lb = 10  # 10 8 6
-        self.train_neg_iou_th = 0.86  if self.data_set == "GENIA"  else 0.81 # 0.01 0.51 0.67 0.76 0.81 0.86 0.91 0.99     0.804-unk-genia
+        self.Lb = 10 
+        self.train_neg_iou_th = 0.86  if self.data_set == "GENIA"  else 0.81 
 
         # embedding
         # bert
         self.use_bert = False
-        self.bert_config = 'large'  # "base" "large"
+        self.bert_config = 'large' 
         self.fusion = True
         self.fusion_sum = True
         self.use_last_four = False
         self.input_size_bert = 768 if self.bert_config == 'base' else 1024
         self.fusion_layer = 13 if self.bert_config == 'base' else 25
-        self.bert_path = '/home/iot538/Documents/wangchi/data/bert/'
+        self.bert_path = ''
         # word vector
-        self.vec_model = "wiki-pubmed" if self.data_set == "GENIA"  else "glove" # glove_200d  glove wiki PubMed
+        self.vec_model = "wiki-pubmed" if self.data_set == "GENIA"  else "glove" 
         self.word_embedding_size = 100 if self.vec_model == "glove" else 200
         self.word2vec_path = vec_file[self.vec_model]
 
@@ -33,16 +33,16 @@ class Config:
         # model
         self.use_cnn = True
         self.cnn_block = 7 if self.data_set == "GENIA" else 5
-        self.kernel_size = 3  # 3
-        self.hit_pooling_size =  3 # 1
-        self.nested_depth_fc_size = 1024  if self.use_bert == True else 256 #  256
+        self.kernel_size = 3  
+        self.hit_pooling_size =  3
+        self.nested_depth_fc_size = 1024  if self.use_bert == True else 256 
 
         # DTE
         self.if_DTE = True
         self.if_char = True
-        self.char_embedding_size = 25 #25  + 4*5
+        self.char_embedding_size = 25
         self.if_pos = True
-        self.pos_embedding_size = 6 #6 +4*3
+        self.pos_embedding_size = 6 
         self.if_transformer = True
         self.N = 2
         self.h = 4
@@ -54,15 +54,15 @@ class Config:
         self.if_freeze = False if self.vec_model == "glove" else True
         self.dropout = 0.5
         self.epoch = 100
-        self.batch_size = 8 # 12
-        self.opt ="Adam" #
+        self.batch_size = 8 
+        self.opt ="Adam" 
         self.lr = 3e-4
         self.score_th = 0.75
 
         # test
         self.if_output = False
         self.test_model_path = "./model/" + self.data_set + '/' + 'f1_0.771.pth'
-        self.softmax_threshold = 0  #0.5
+     
 
     def __repr__(self):
         return str(vars(self))
