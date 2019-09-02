@@ -2,8 +2,9 @@ import pickle
 
 from config import config
 from Reader import Reader
+from transfer_wv import work
 
-
+work()
 class preprocess_data():
     def __init__(self, length=config.Lb, save=True, max_length=[]):
         if_save = save
