@@ -4,7 +4,7 @@
 @file: Transformer.py 
 @time: 2019/04/13
 
-@note:
+# Directional self-attention is implemented in original Transformer code.
 """
 
 import numpy as np
