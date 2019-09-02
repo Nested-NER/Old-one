@@ -108,9 +108,9 @@ class TOI_BERT(nn.Module):
                nn.ReLU()
            )
 
-        self.hat_1 = TOI_Pooling(self.input_size, self.config.if_gpu, self.config.layer2_pooling)
+        self.hat_1 = TOI_Pooling(self.input_size, self.config.if_gpu, self.config.hit_pooling_size)
 
-        self.pooling_size = 2 + self.config.layer2_pooling
+        self.pooling_size = 2 + self.config.hit_pooling_size
 
         self.one_step_to_share=nn.Sequential(
             nn.Linear(self.input_size * self.pooling_size, self.config.nested_depth_fc_size),
@@ -123,7 +123,7 @@ class TOI_BERT(nn.Module):
         )
 
         self.one_step_to_hell = nn.Sequential(
-            nn.Linear(self.config.nested_depth_fc_size, self.config.nested_depth),
+            nn.Linear(self.config.nested_depth_fc_size, 3),
         )
 
         if self.config.fusion:

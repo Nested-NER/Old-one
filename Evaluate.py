@@ -36,10 +36,7 @@ class Evaluate:
             for i in range(len(runtimeModel.word_batch)):
                 pred_entities = self.predict(runtimeModel.toi_box_batch[i], cls_s_label[i], runtimeModel.entity_batch[i], runtimeModel.word_batch_var[i])
                 pred_entities_nested_label = []
-                if self.config.if_detail:
-                    self.evaluate_detail(runtimeModel.entity_batch[i], pred_entities, pred_entities_nested_label)
-                else:
-                    self.evaluate(runtimeModel.entity_batch[i], pred_entities)
+                self.evaluate_detail(runtimeModel.entity_batch[i], pred_entities, pred_entities_nested_label)
 
         return self.calc_f1()
 
@@ -48,34 +45,24 @@ class Evaluate:
         for id in range(len(label)):
             if(label[id][2] == 0):
                 deteleList.append(id)
-            #elif depth[id][1] - depth[id][0] > 7 and depth[id][2] == 0:
-                #deteleList.append(id)
+
         label = np.delete(label, deteleList, 0)
         depth = np.delete(depth, deteleList, 0)
         return label.tolist(), depth.tolist()
 
 
     def calc_f1(self):
-        if self.config.if_detail:
-            print("------------------------------------------")
-            print("toi\t", self.toi_F)
-            print("after score filter\t", self.score_F)
-            print("after len filter\t", self.len_F)
-            #print(self.confusion_matrix.astype(np.int32))
-            print( "              layer1_GT layer2_GT False")
-            print(f"layer1output: {self.layer_precision[0][0]} | {self.layer_precision[0][1]} | {self.layer_precision[0][2]}")
-            print(f"layer2output: {self.layer_precision[1][0]} | {self.layer_precision[1][1]} | {self.layer_precision[1][2]}")
+        print("------------------------------------------")
+        print("toi\t", self.toi_F)
+        print("after score filter\t", self.score_F)
+        print("after len filter\t", self.len_F)
+        print( "              layer1_GT layer2_GT False")
+        print(f"layer1output: {self.layer_precision[0][0]} | {self.layer_precision[0][1]} | {self.layer_precision[0][2]}")
+        print(f"layer2output: {self.layer_precision[1][0]} | {self.layer_precision[1][1]} | {self.layer_precision[1][2]}")
 
-            df, cls_f1 = self.get_count_dataframe(self.confusion_matrix, list(self.model.config.id2label)[1:])
-            print(df)
-            #print("contain:")
-            #print(str(self.contain_matrix.astype(np.int32)))
-        else:
-            print(self.pred_all, self.pred, self.recall_all, self.recall)
-            precision = self.pred / self.pred_all if self.pred_all != 0 else 0
-            recall = self.recall / self.recall_all if self.recall_all != 0 else 0
-            cls_f1 = (2 * precision * recall) / (precision + recall) if precision * recall != 0 else 0
-            print(f"Precision {precision:.4f}, Recall {recall:.4f}, F1 {cls_f1:.4f}")
+        df, cls_f1 = self.get_count_dataframe(self.confusion_matrix, list(self.model.config.id2label)[1:])
+        print(df)
+
         return cls_f1
 
     def predict(self, tois, cls_s, entities, word_ids):
@@ -95,9 +82,7 @@ class Evaluate:
         cls_score = cls_score[pre_index]
         self.renewal_F_result(tois_, cls, entities, self.toi_F)
         self.write_result(tois_, cls, cls_score, entities, words, 'TOI')
-        # cls[np.where(cls_score < self.config.softmax_threshold)] = 0
 
-        # entity_index = np.where(cls != 0)[0]
         pre_index = np.where(cls_score >= self.config.softmax_threshold)[0]
         tois_ = tois_[pre_index]
         cls = cls[pre_index]
@@ -105,34 +90,7 @@ class Evaluate:
         self.renewal_F_result(tois_, cls, entities, self.score_F)
         self.write_result(tois_, cls, cls_score, entities, words, 'score filter')
 
-        # pre_index = self.len_filter(tois, cls)
-        # tois_ = tois_[pre_index]
-        # cls = cls[pre_index]
-        # cls_score = cls_score[pre_index]
-        # self.renewal_F_result(tois_, cls, entities, self.len_F)
-        # self.write_result(tois_, cls, cls_score, entities, words, 'len filter')
 
-        '''
-        if self.config.if_filter and not whetherLabel:
-            filter_index = np.where(cls_score >= self.config.score_th)[0]
-            delete_id = []
-            cnt = 0
-            for each in filter_index:
-                # if(tois[each][1] - tois[each][0] <= 6 and cls[each] > 7):
-                #    delete_id.append(cnt)
-                if (tois[entity_index[each]][1] - tois[entity_index[each]][0] > 6 and cls[each] == 0):
-                    delete_id.append(cnt)
-                cnt += 1
-            filter_index = np.delete(filter_index, delete_id)
-
-            tois_ = tois_[filter_index]
-            cls = cls[filter_index]
-            cls_score = cls_score[filter_index]
-            self.renewal_F_result(tois_, cls, entities, self.filter_F)
-            self.write_result(tois_, cls, cls_score, entities, words, 'After filter')
-       
-        self.write_result(None, None, None, None, None, 'end')
-         '''
         return [(tois_[i][0], tois_[i][1], cls[i]) for i in range(len(tois_))]
 
     def write_result(self, tois, cls, cls_score, gold_entities, words, type):
@@ -203,8 +161,6 @@ class Evaluate:
             if gt_layer[id] >= 1:
                 gt_layer[id] = 1
                 gold_entities[id] = list(gold_entities[id])
-                # if self.config.MultiTaskLearning:
-                #     gold_entities[id][2] += len(self.config.id2label) // 2
                 gold_entities[id] = tuple(gold_entities[id])
 
         for idx in range(len(gold_entities)):
@@ -213,7 +169,6 @@ class Evaluate:
 
         right_pres = []
         for idx in range(len(pred_entities)):
-            #and pred_depth[idx][2] == gt_layer[self.getId(pred_entities[idx], gold_entities)]
             if tuple(pred_entities[idx]) in gold_entities :
                 right_pres.append(pred_entities[idx])
                 self.confusion_matrix[pred_entities[idx][2] - 1, pred_entities[idx][2] - 1] += 1   # TP
@@ -229,7 +184,6 @@ class Evaluate:
                 else:
                     self.layer_precision[0][2] += 1
 
-        # 更新right_pre_contain关系矩阵
         for i in range(len(right_pres)):
             for j in range(i + 1, len(right_pres)):
                 if check_contain(right_pres[i][0:2], right_pres[j][0:2]):
@@ -256,7 +210,6 @@ class Evaluate:
 
     def init(self):
         self.confusion_matrix = np.zeros((self.classes_num + 1, self.classes_num + 1))
-        #self.confusion_matrix_layer = np.zeros((5, self.classes_num + 1, self.classes_num + 1))
         self.layer_precision = np.zeros((2, 3))
         self.contain_matrix = np.zeros((self.classes_num, self.classes_num))
         self.toi_F = {"FN": [0] * self.classes_num, "FP": [0] * self.classes_num}

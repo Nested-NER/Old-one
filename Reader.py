@@ -42,7 +42,7 @@ class Reader:
             if max_ious[i] == 1:
                 self.candidation_hit[mode] += 1
                 tois.append((toi_boxes[i, 0], toi_boxes[i, 1], entities[max_idx[i]][2]))
-            elif max_ious[i] >= self.config.train_pos_iou_th and mode == "train":
+            elif max_ious[i] >= 1 and mode == "train":
                 tois.append((toi_boxes[i, 0], toi_boxes[i, 1], entities[max_idx[i]][2]))
             elif max_ious[i] < self.config.train_neg_iou_th or mode != "train":
                 tois.append((toi_boxes[i, 0], toi_boxes[i, 1], 0))
@@ -100,18 +100,12 @@ class Reader:
         self.char2id = {v: i for i, v in enumerate(self.id2char)}
         self.id2pos_tag = sorted(list(pos_tag_set))
         self.pos_tag2id = {v: i for i, v in enumerate(self.id2pos_tag)}
-        # if self.config.MultiTaskLearning:
-        #     self.id2label = ["BG"] + sorted(list(label_set)) + sorted(list(label_set))
-        #     for i in range(len(self.id2label) // 2 + 1, len(self.id2label)):
-        #         self.id2label[i] += '_layer2+'
-        # else:
-        #     self.id2label = ["BG"] + sorted(list(label_set))
+
         self.id2label = ["BG"] + sorted(list(label_set))
         self.label2id = {v: i for i, v in enumerate(self.id2label)}
         self.max_word_len = max_word_len
 
     def read_all_data(self):
-        # for mode in ["train", "test", "dev", "debug"]:
         for mode in ["train", "test", "dev"]:
             self.infos[mode] = self.read_file(self.config.data_path + f"{mode}/{mode}.data", mode)
         self.create_dic()
@@ -172,14 +166,8 @@ class Reader:
                     entity_layer0.append(entity_vec[id])
                     entity_different_layer.append(entity_vec[id])
                 else:
-                    if self.config.MultiTaskLearning:
-                        entity_layer1.append(
-                            (entity_vec[id][0], entity_vec[id][1], entity_vec[id][2] + len(self.id2label) // 2))
-                        entity_different_layer.append(
-                            (entity_vec[id][0], entity_vec[id][1], entity_vec[id][2] + len(self.id2label) // 2))
-                    else:
-                        entity_layer1.append((entity_vec[id][0], entity_vec[id][1], entity_vec[id][2]))
-                        entity_different_layer.append((entity_vec[id][0], entity_vec[id][1], entity_vec[id][2]))
+                    entity_layer1.append((entity_vec[id][0], entity_vec[id][1], entity_vec[id][2]))
+                    entity_different_layer.append((entity_vec[id][0], entity_vec[id][1], entity_vec[id][2]))
 
             tois = self.generate_toi(word_num, entity_vec, mode, -1)
 
@@ -188,72 +176,6 @@ class Reader:
                     if not each in tois:
                         tois.append(each)
             tois = sorted(tois)
-            # tois_layer0 = []
-            # tois_layer1 = []
-            '''
-            tois_layer0 = self.generate_toi(word_num, entity_layer0, mode, 0)
-            tois_layer0 = sorted(tois_layer0)
-            tois_layer1 = self.generate_toi(word_num, entity_layer1, mode, 1)
-            #tois_layer1 = entity_layer1
-            tois_layer1 = sorted(tois_layer1)
-            gt_layer = []
-            for id in range(len(tois_layer0)):
-                for each in entity_layer1:
-                    if each[0] == tois_layer0[id][0] and each[1] == tois_layer0[id][1]:
-                        gt_layer.append(id)
-            temp = np.array(tois_layer0)
-            temp = np.delete(temp, gt_layer, 0)
-            tois_layer0 = [(each[0], each[1], each[2]) for each in temp]
-            if mode == 'train':
-                for each in entity_layer0:
-                    if not each in tois_layer0:
-                        tois_layer0.append(each)
-            tois_layer0 = sorted(tois_layer0)
-
-            gt_layer = []
-            for id in range(len(tois_layer1)):
-                if not judge_cover(tois_layer1[id], entity_layer0):
-                    gt_layer.append(id)
-
-            temp = np.array(tois_layer1)
-            temp = np.delete(temp, gt_layer, 0)
-            tois_layer1 = [(each[0], each[1], each[2]) for each in temp]
-
-            gt_layer = []
-            for id in range(len(tois_layer1)):
-                for each in tois_layer0:
-                    if(tois_layer1[id][0] == each[0] and tois_layer1[id][1] == each[1]):
-                        gt_layer.append(id)
-                        break
-            temp = np.array(tois_layer1)
-            temp = np.delete(temp, gt_layer, 0)
-            tois_layer1 = [(each[0], each[1], each[2]) for each in temp]
-            if mode == 'train':
-                for each in entity_layer1:
-                    if not each in tois_layer1:
-                        tois_layer1.append(each)
-            tois_layer1 = sorted(tois_layer1)
-            '''
-            '''
-            #tois = tois_layer0
-            for each in tois_layer1:
-                find_same = False
-                for each_layer0 in tois_layer0:
-                    if each[0] == each_layer0[0] and each[1] == each_layer0[1]:
-                        find_same = True
-                        break;
-                if not find_same:
-                    if each[2]:
-                        tois.append((each[0], each[1], each[2] + len(self.id2label) // 2))
-                    else:
-                        tois.append(each)
-
-            if mode == 'train':
-                for each in entity_different_layer:
-                    if each not in tois:
-                        tois.append(each)
-            tois = sorted(tois)
-            '''
 
             word_dic[word_num].append(word_vec)
             char_dic[word_num].append(char_mat)
@@ -261,8 +183,6 @@ class Reader:
             pos_tag_dic[word_num].append(pos_tag_vec)
             entity_dic[word_num].append(entity_vec)
             toi_dic[word_num].append(tois)
-            # toi_dic_layer0[word_num].append(tois_layer0)
-            # toi_dic_layer1[word_num].append(tois_layer1)
             origin_word[word_num].append(sent_info.words)
 
         for each in len_entity:
@@ -282,10 +202,7 @@ class Reader:
                             range(0, len(entity_dic[length]), self.config.batch_size)]
             toi_batch = [toi_dic[length][i: i + self.config.batch_size] for i in
                          range(0, len(toi_dic[length]), self.config.batch_size)]
-            # toi_batch_layer0 = [toi_dic_layer0[length][i: i + self.config.batch_size] for i in
-            #              range(0, len(toi_dic_layer0[length]), self.config.batch_size)]
-            # toi_batch_layer1 = [toi_dic_layer1[length][i: i + self.config.batch_size] for i in
-            #              range(0, len(toi_dic_layer1[length]), self.config.batch_size)]
+
             word_origin_batch = [origin_word[length][i:i + self.config.batch_size]
                                  for i in range(0, len(origin_word[length]), self.config.batch_size)]
 
@@ -295,11 +212,8 @@ class Reader:
             pos_tag_batches.extend(pos_tag_batch)
             entity_batches.extend(entity_batch)
             toi_batches.extend(toi_batch)
-            # toi_batches_layer0.extend(toi_batch_layer0)
-            # toi_batches_layer1.extend(toi_batch_layer1)
             word_origin_batches.extend(word_origin_batch)
 
-        # return (word_batches, char_batches, char_len_batches, pos_tag_batches, entity_batches, toi_batches, toi_batches_layer0, toi_batches_layer1, word_origin_batches)
         return (word_batches, char_batches, char_len_batches, pos_tag_batches, entity_batches, toi_batches, word_origin_batches)
 
     def load_vectors_model(self):

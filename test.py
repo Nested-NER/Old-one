@@ -17,32 +17,27 @@ epoch_end = 100
 config.score_th = 0.5
 misc_config = pickle.load(open(config.get_pkl_path("config"), "rb"))
 config.load_config(misc_config)
-bert_model = BertModel.from_pretrained(f"/home/iot538/Documents/wangchi/data/bert/{config.bert_config}")
+bert_model = BertModel.from_pretrained(f"{config.bert_path}{config.bert_config}")
 bert_model.cuda()
 
 bert_model.eval()
 
-model_path = config.test_model_path
+model_path = config.get_model_path() + "f1_0.771.pth"
 
-for e in range(30, 80):
-    # model_path = config.get_model_path() + f"epoch{e}.pth"  # test trained model
-    # model_path = config.get_model_path() + f"best.pth"  # test best model
-    #config.C = e
-    with open(config.get_pkl_path(mode), "rb") as f:
-        word_batches, char_batches, char_len_batches, pos_tag_batches, entity_batches, toi_batches,  word_origin_batches = pickle.load(f)
-    print("load data from " + config.get_pkl_path(mode))
+with open(config.get_pkl_path(mode), "rb") as f:
+    word_batches, char_batches, char_len_batches, pos_tag_batches, entity_batches, toi_batches,  word_origin_batches = pickle.load(f)
+print("load data from " + config.get_pkl_path(mode))
 
-    #print(model_path)
-    if not os.path.exists(model_path):
-        continue
-    print("load model from " + model_path)
-    model1 = torch.load(model_path)
-    ner_model = TOI_BERT(config)
-    ner_model.load_state_dict(torch.load(model_path))
-    if config.if_gpu and torch.cuda.is_available():
-        ner_model = ner_model.cuda()
-    config.softmax_threshold = e / 100;
-    evaluate = Evaluate(ner_model, config)
-    print(f"soft: {config.softmax_threshold}")
-    evaluate.get_f1(zip(word_batches, char_batches, char_len_batches, pos_tag_batches, entity_batches, toi_batches, a, b, word_origin_batches), bert_model)
-    print("\n\n")
+#print(model_path)
+if not os.path.exists(model_path):
+   print("loda model error")
+print("load model from " + model_path)
+model1 = torch.load(model_path)
+ner_model = TOI_BERT(config)
+ner_model.load_state_dict(torch.load(model_path))
+if config.if_gpu and torch.cuda.is_available():
+    ner_model = ner_model.cuda()
+evaluate = Evaluate(ner_model, config)
+print(f"soft: {config.softmax_threshold}")
+evaluate.get_f1(zip(word_batches, char_batches, char_len_batches, pos_tag_batches, entity_batches, toi_batches, word_origin_batches), bert_model)
+print("\n\n")

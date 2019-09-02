@@ -59,7 +59,7 @@ def train(all_batch=[], read_from_file=True, section=[]):
     pre_loss = 100000
     train_all_batches = list(zip(train_word_batches, train_char_batches, train_char_len_batches, train_pos_tag_batches, train_entity_batches, train_toi_batches, train_word_origin_batches))
     tokenizer = BertTokenizer.from_pretrained(f"bert-{config.bert_config}-uncased")
-    bert_model = BertModel.from_pretrained(f"/home/iot538/Documents/wangchi/data/bert/{config.bert_config}")
+    bert_model = BertModel.from_pretrained(f"{config.bert_path}{config.bert_config}")
     bert_model.cuda()
     bert_model.eval()
     for parameter in bert_model.parameters():

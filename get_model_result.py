@@ -101,7 +101,7 @@ class ModelInRuntime:
             self.entity_nested_depth.append(gt_layer)
         self.entity_nested_depth = np.hstack(self.entity_nested_depth)
         self.entity_nested_depth[
-            np.where(self.entity_nested_depth >= self.config.nested_depth)] = self.config.nested_depth - 1
+            np.where(self.entity_nested_depth >= 2)] = 2
         self.entity_nested_depth = self.whetherUseGpu(Variable(torch.LongTensor(self.entity_nested_depth)),
                                                       self.config.if_gpu)
 

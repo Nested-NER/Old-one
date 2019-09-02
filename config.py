@@ -12,9 +12,7 @@ class Config:
         self.data_set = "GENIA"  # ACE05 ACE04 GENIA conll2003
         self.data_path = f"./dataset/{self.data_set}/"
         self.Lb = 10  # 10 8 6
-        self.train_pos_iou_th = 1
         self.train_neg_iou_th = 0.86  if self.data_set == "GENIA"  else 0.81 # 0.01 0.51 0.67 0.76 0.81 0.86 0.91 0.99     0.804-unk-genia
-        self.mode = None
 
         # embedding
         # bert
@@ -25,6 +23,7 @@ class Config:
         self.use_last_four = False
         self.input_size_bert = 768 if self.bert_config == 'base' else 1024
         self.fusion_layer = 13 if self.bert_config == 'base' else 25
+        self.bert_path = '/home/iot538/Documents/wangchi/data/bert/'
         # word vector
         self.vec_model = "wiki-pubmed" if self.data_set == "GENIA"  else "glove" # glove_200d  glove wiki PubMed
         self.word_embedding_size = 100 if self.vec_model == "glove" else 200
@@ -33,9 +32,10 @@ class Config:
 
         # model
         self.use_cnn = True
-        self.cnn_block = 5 # 4
+        self.cnn_block = 7 if self.data_set == "GENIA" else 5
         self.kernel_size = 3  # 3
-        self.layer2_pooling =  3 # 1
+        self.hit_pooling_size =  3 # 1
+        self.nested_depth_fc_size = 1024  if self.use_bert == True else 256 #  256
 
         # DTE
         self.if_DTE = True
@@ -61,9 +61,6 @@ class Config:
 
         # test
         self.if_output = False
-        self.if_detail = True
-        self.if_filter = True
-        self.if_filter_single_layer = False
         self.test_model_path = "./model/" + self.data_set + '/' + 'f1_0.771.pth'
         self.softmax_threshold = 0  #0.5
 
@@ -79,28 +76,14 @@ class Config:
                 path += f"config"
             else:
                 path += mode + "/" \
-                        + f"C_:{self.Lb}" \
-                        + f"_multilayer:{self.MultiTaskLearning}"
+                        + f"C_:{self.Lb}"
                 if mode == "train":
                     path += f"_neg_iou_th{self.train_neg_iou_th}"
 
         return path + f"_{self.vec_model}.pkl"
 
     def get_model_path(self):
-        path = f"./model/{self.data_set}/"
-        path += f"{self.vec_model}/" \
-                + f"pooling_size:{self.layer2_pooling}_" \
-                + f"kernel_size:{self.kernel_size}_" \
-                + f"cnn_block:{self.cnn_block}_" \
-                  f"weight_layer:{self.weight_layer}_" \
-                  f"C:{self.Lb}_" \
-                  f"IOU:{self.train_neg_iou_th}_" \
-                + f"multi_layer:{self.MultiTaskLearning}_" \
-                + f"use_fusion:{self.fusion}_" \
-                + f"use_cnn:{self.use_cnn}_" \
-                + f"use_bert:{self.use_bert}_" \
-                + f"use_dte:{self.if_DTE}_" \
-                + f"{self.bert_config}"
+        path = f"./model/{self.data_set}"
         if not os.path.exists(path):
             os.makedirs(path)
         return path + "/"
