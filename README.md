@@ -19,11 +19,11 @@ Before running the codes, please move word embeddings to "/model/word2vec/".
 All configuration are listed in config.py. Please verify parameters before running the codes.
 
 ### Usage
-####Training
+#### Training
 >- python process_data.py
 >- python train.py 
 
-####Testing
+#### Testing
 >- python test.py
 
 ### Test Best Model:
