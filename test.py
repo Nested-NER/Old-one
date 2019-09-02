@@ -14,7 +14,7 @@ test_best = True
 epoch_start = 1
 epoch_end = 100
 
-config.score_th = 0.5
+
 misc_config = pickle.load(open(config.get_pkl_path("config"), "rb"))
 config.load_config(misc_config)
 bert_model = BertModel.from_pretrained(f"{config.bert_path}{config.bert_config}")
