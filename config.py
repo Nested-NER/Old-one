@@ -33,16 +33,16 @@ class Config:
 
         # model
         self.use_cnn = True
-        self.cnn_block = 5 # 4
-        self.kernel_size = 3  # 3
-        self.layer2_pooling =  3 # 1
+        self.cnn_block = 5
+        self.kernel_size = 3  
+        self.layer2_pooling =  3 
 
         # DTE
         self.if_DTE = True
         self.if_char = True
-        self.char_embedding_size = 25 #25  + 4*5
+        self.char_embedding_size = 25
         self.if_pos = True
-        self.pos_embedding_size = 6 #6 +4*3
+        self.pos_embedding_size = 6 
         self.if_transformer = True
         self.N = 2
         self.h = 4
@@ -54,8 +54,8 @@ class Config:
         self.if_freeze = False if self.vec_model == "glove" else True
         self.dropout = 0.5
         self.epoch = 100
-        self.batch_size = 8 # 12
-        self.opt ="Adam" #
+        self.batch_size = 8 
+        self.opt ="Adam" 
         self.lr = 3e-4
         self.score_th = 0.75
 
@@ -65,7 +65,7 @@ class Config:
         self.if_filter = True
         self.if_filter_single_layer = False
         self.test_model_path = "./model/" + self.data_set + '/' + 'f1_0.771.pth'
-        self.softmax_threshold = 0  #0.5
+     
 
     def __repr__(self):
         return str(vars(self))
