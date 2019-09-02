@@ -53,10 +53,10 @@ class Config:
         self.if_shuffle = True
         self.if_freeze = False if self.vec_model == "glove" else True
         self.dropout = 0.5
-        self.epoch = 100 if self.vec_model == "glove" else 100 #100
+        self.epoch = 100
         self.batch_size = 8 # 12
         self.opt ="Adam" #
-        self.lr = 3e-4  if self.use_bert == False or self.vec_model == "glove" else  3e-4 # 0.005 1e-4
+        self.lr = 3e-4
         self.score_th = 0.75
 
         # test
@@ -64,8 +64,6 @@ class Config:
         self.if_detail = True
         self.if_filter = True
         self.if_filter_single_layer = False
-        self.layer_minlen = [1, 2, 3]
-        self.layer_maxlen = [self.Lb, self.Lb, self.Lb]
         self.test_model_path = "./model/" + self.data_set + '/' + 'f1_0.771.pth'
         self.softmax_threshold = 0  #0.5
 

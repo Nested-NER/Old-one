@@ -54,16 +54,6 @@ class Evaluate:
         depth = np.delete(depth, deteleList, 0)
         return label.tolist(), depth.tolist()
 
-    # def len_filter(self, tois, cls):
-    #     length = tois[:, 1] - tois[:, 0]
-    #     len1_index = np.where(length <= self.config.layer_maxlen[0] + 1)[0]
-    #     if self.config.MultiTaskLearning:
-    #         layer1_index = np.where(cls <= len(self.config.id2label) // 2)[0]
-    #         layer2_index = np.where(cls > len(self.config.id2label) // 2)[0]
-    #         len2_index = np.intersect1d(np.where(length > 1)[0], np.where(length <= self.config.layer_maxlen[1] + 1)[0])
-    #         return np.union1d(np.intersect1d(len1_index, layer1_index), np.intersect1d(len2_index, layer2_index))
-    #     else:
-    #         return len1_index
 
     def calc_f1(self):
         if self.config.if_detail:
@@ -234,7 +224,6 @@ class Evaluate:
 
             else:
                 self.confusion_matrix[self.classes_num, pred_entities[idx][2] - 1] += 1            # FP
-                #self.layer_precision[prediction_layer][2] += 1
                 if pred_entities[idx][2] > 6:
                     self.layer_precision[1][2] += 1
                 else:
