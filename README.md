@@ -1,4 +1,6 @@
-# Toi-SCNN-DTE:Text-of-Interest detection with Stacked Convolutional Neural Network and Dual Transformer Encoders
+# A Neural ToI Detection Model for Nested NER
+
+# We provide the implementation of ToI-SCNN-DTE Model.
 
 ### Environment
 #### Python packages
@@ -13,7 +15,9 @@
 >- ACE04/05 : [glove 100d](https://drive.google.com/open?id=1qDmFF0bUKHt5GpANj7jCUmDXgq50QJKw)
 >- GENIA : [wikipedia-pubmed-and-PMC-w2v 200d](http://evexdb.org/pmresources/vec-space-models/wikipedia-pubmed-and-PMC-w2v.bin)
 
-Before running the codes, please move word embeddings to "/model/word2vec/".
+Before running the code, please put word embeddings at the directory "/model/word2vec/".
+
+### Data format
 
 ### Configuration
 All configuration are listed in config.py. Please verify parameters before running the codes.
