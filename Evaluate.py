@@ -1,13 +1,10 @@
-import torch
 import numpy as np
 import torch.nn.functional as F
 import pandas as pd
-from torch.autograd import Variable
-from pytorch_pretrained_bert import BertTokenizer, BertModel, BertForMaskedLM
+from pytorch_pretrained_bert import BertTokenizer
 from config import config
 from tqdm import tqdm
-from utils import check_contain, select_toi, batch_split, generate_mask, check_overlap
-import os
+from utils import check_contain, batch_split
 from get_model_result import ModelInRuntime
 
 tokenizer = BertTokenizer.from_pretrained(f"bert-{config.bert_config}-uncased")
@@ -53,13 +50,6 @@ class Evaluate:
 
     def calc_f1(self):
         print("------------------------------------------")
-        print("toi\t", self.toi_F)
-        print("after score filter\t", self.score_F)
-        print("after len filter\t", self.len_F)
-        print( "              layer1_GT layer2_GT False")
-        print(f"layer1output: {self.layer_precision[0][0]} | {self.layer_precision[0][1]} | {self.layer_precision[0][2]}")
-        print(f"layer2output: {self.layer_precision[1][0]} | {self.layer_precision[1][1]} | {self.layer_precision[1][2]}")
-
         df, cls_f1 = self.get_count_dataframe(self.confusion_matrix, list(self.model.config.id2label)[1:])
         print(df)
 
@@ -83,10 +73,6 @@ class Evaluate:
         self.renewal_F_result(tois_, cls, entities, self.toi_F)
         self.write_result(tois_, cls, cls_score, entities, words, 'TOI')
 
-        pre_index = np.where(cls_score >= self.config.softmax_threshold)[0]
-        tois_ = tois_[pre_index]
-        cls = cls[pre_index]
-        cls_score = cls_score[pre_index]
         self.renewal_F_result(tois_, cls, entities, self.score_F)
         self.write_result(tois_, cls, cls_score, entities, words, 'score filter')
 

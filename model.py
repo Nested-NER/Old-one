@@ -123,7 +123,7 @@ class TOI_BERT(nn.Module):
         )
 
         self.one_step_to_hell = nn.Sequential(
-            nn.Linear(self.config.nested_depth_fc_size, 3),
+            nn.Linear(self.config.nested_depth_fc_size, self.config.nested_depth),
         )
 
         if self.config.fusion:

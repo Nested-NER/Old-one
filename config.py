@@ -9,7 +9,7 @@ vec_file = {"wiki-pubmed": "./model/word2vec/wikipedia-pubmed-and-PMC-w2v.bin",
 class Config:
     def __init__(self):
         # sample
-        self.data_set = "ACE05"  # ACE05 ACE04 GENIA conll2003
+        self.data_set = "GENIA"  # ACE05 ACE04 GENIA conll2003
         self.data_path = f"./dataset/{self.data_set}/"
         self.Lb = 10 
         self.train_neg_iou_th = 0.86  if self.data_set == "GENIA"  else 0.81 
@@ -36,6 +36,7 @@ class Config:
         self.kernel_size = 3  
         self.hit_pooling_size =  3
         self.nested_depth_fc_size = 1024  if self.use_bert == True else 256 
+        self.nested_depth = 3
 
         # DTE
         self.if_DTE = True

@@ -38,6 +38,5 @@ ner_model.load_state_dict(torch.load(model_path))
 if config.if_gpu and torch.cuda.is_available():
     ner_model = ner_model.cuda()
 evaluate = Evaluate(ner_model, config)
-print(f"soft: {config.softmax_threshold}")
 evaluate.get_f1(zip(word_batches, char_batches, char_len_batches, pos_tag_batches, entity_batches, toi_batches, word_origin_batches), bert_model)
 print("\n\n")
