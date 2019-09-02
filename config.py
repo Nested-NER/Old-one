@@ -9,24 +9,24 @@ vec_file = {"wiki-pubmed": "./model/word2vec/wikipedia-pubmed-and-PMC-w2v.bin",
 class Config:
     def __init__(self):
         # sample
-        self.data_set = "GENIA"  # ACE05 ACE04 GENIA conll2003
+        self.data_set = "ACE05"  # ACE05 ACE04 GENIA conll2003
         self.data_path = f"./dataset/{self.data_set}/"
-        self.Lb = 10  # 10 8 6
+        self.Lb = 10  
         self.train_pos_iou_th = 1
-        self.train_neg_iou_th = 0.86  if self.data_set == "GENIA"  else 0.81 # 0.01 0.51 0.67 0.76 0.81 0.86 0.91 0.99     0.804-unk-genia
+        self.train_neg_iou_th = 0.86  if self.data_set == "GENIA"  else 0.81
         self.mode = None
 
         # embedding
         # bert
         self.use_bert = False
-        self.bert_config = 'large'  # "base" "large"
+        self.bert_config = 'large' 
         self.fusion = True
         self.fusion_sum = True
         self.use_last_four = False
         self.input_size_bert = 768 if self.bert_config == 'base' else 1024
         self.fusion_layer = 13 if self.bert_config == 'base' else 25
         # word vector
-        self.vec_model = "wiki-pubmed" if self.data_set == "GENIA"  else "glove" # glove_200d  glove wiki PubMed
+        self.vec_model = "wiki-pubmed" if self.data_set == "GENIA"  else "glove" 
         self.word_embedding_size = 100 if self.vec_model == "glove" else 200
         self.word2vec_path = vec_file[self.vec_model]
 
