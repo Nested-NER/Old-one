@@ -1,6 +1,6 @@
 # A Neural ToI Detection Model for Nested NER
 
-# We provide the implementation of ToI-SCNN-DTE Model.
+We provide the implementation of ToI-SCNN-DTE Model.
 
 ### Environment
 #### Python packages
