@@ -29,7 +29,7 @@ def train(all_batch=[], read_from_file=True, section=[]):
     if read_from_file:
         with open(config.get_pkl_path("train"), "rb") as f:
             train_word_batches, train_char_batches, train_char_len_batches, train_pos_tag_batches, train_entity_batches, train_toi_batches, train_word_origin_batches = pickle.load(f)
-        with open(config.get_pkl_path("test"), "rb") as f:
+        with open(config.get_pkl_path("dev"), "rb") as f:
             test_word_batches, test_char_batches, test_char_len_batches, test_pos_tag_batches, test_entity_batches, test_toi_batches, test_word_origin_batches = pickle.load(f)
     else:
         train_word_batches, train_char_batches, train_char_len_batches, train_pos_tag_batches, train_entity_batches, train_toi_batches, train_toi_batch_layer0, train_toi_batch_layer1 = all_batch[0]
