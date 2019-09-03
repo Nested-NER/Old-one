@@ -32,7 +32,6 @@ print("load data from " + config.get_pkl_path(mode))
 if not os.path.exists(model_path):
    print("loda model error")
 print("load model from " + model_path)
-model1 = torch.load(model_path)
 ner_model = TOI_BERT(config)
 ner_model.load_state_dict(torch.load(model_path))
 if config.if_gpu and torch.cuda.is_available():
