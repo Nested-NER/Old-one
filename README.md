@@ -15,7 +15,7 @@ We provide the implementation of ToI-SCNN-DTE Model.
 >- ACE04/05 : [glove 100d](https://drive.google.com/open?id=1qDmFF0bUKHt5GpANj7jCUmDXgq50QJKw)
 >- GENIA : [wikipedia-pubmed-and-PMC-w2v 200d](http://evexdb.org/pmresources/vec-space-models/wikipedia-pubmed-and-PMC-w2v.bin)
 
-Before running the code, please put word embeddings at the directory "/model/word2vec/".
+Before running the code, please put word embeddings to the path "/model/word2vec/".
 
 ### Data format
 
