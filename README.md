@@ -30,7 +30,7 @@ The first line is a sentence. The second line is POS tags. The third line is the
 
 ### Configuration
 All configuration are listed in config.py. Please verify parameters before running the codes.
->- Please download BERT-Large-Uncased (https://github.com/google-research/bert), and copy it into the path "./bert_model/large/" to train our model in DTE+BERT  model.
+>- Please download BERT-Large-Uncased (https://github.com/google-research/bert), and copy it to the path "./bert_model/large/" to train our model in DTE+BERT  model.
 
 ### Usage
 #### Training
